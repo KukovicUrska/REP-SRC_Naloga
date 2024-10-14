@@ -14,6 +14,4 @@ public partial class Movie
     public string? Description { get; set; }
 
     public byte[]? Picture { get; set; }
-
-    public virtual ICollection<Actor> TkIdActors { get; } = new List<Actor>();
 }

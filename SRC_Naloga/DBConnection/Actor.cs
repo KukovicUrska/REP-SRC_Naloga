@@ -12,6 +12,4 @@ public partial class Actor
     public string? LastName { get; set; }
 
     public DateTime? BornDate { get; set; }
-
-    public virtual ICollection<Movie> TkIdMovies { get; } = new List<Movie>();
 }

@@ -17,6 +17,8 @@ public partial class DbImdbContext : DbContext
 
     public virtual DbSet<Actor> Actors { get; set; }
 
+    public virtual DbSet<ActorMovie> ActorMovies { get; set; }
+
     public virtual DbSet<Movie> Movies { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -27,7 +29,7 @@ public partial class DbImdbContext : DbContext
     {
         modelBuilder.Entity<Actor>(entity =>
         {
-            entity.HasKey(e => e.IdActor).HasName("PK__Actor__28CBA093357CB4A6");
+            entity.HasKey(e => e.IdActor).HasName("PK__Actor__28CBA09393213C2C");
 
             entity.ToTable("Actor");
 
@@ -43,27 +45,23 @@ public partial class DbImdbContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(150)
                 .HasColumnName("lastName");
+        });
 
-            entity.HasMany(d => d.TkIdMovies).WithMany(p => p.TkIdActors)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ActorMovie",
-                    r => r.HasOne<Movie>().WithMany()
-                        .HasForeignKey("TkIdMovie")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ActorMovi__tk_id__38996AB5"),
-                    l => l.HasOne<Actor>().WithMany()
-                        .HasForeignKey("TkIdActor")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__ActorMovi__tk_id__37A5467C"),
-                    j =>
-                    {
-                        j.HasKey("TkIdActor", "TkIdMovie").HasName("PK__ActorMov__8814954E38D52CDD");
-                    });
+        modelBuilder.Entity<ActorMovie>(entity =>
+        {
+            entity.HasNoKey();
+
+            entity.Property(e => e.FkIdActor)
+                .HasMaxLength(30)
+                .HasColumnName("fk_idActor");
+            entity.Property(e => e.FkIdMovie)
+                .HasMaxLength(30)
+                .HasColumnName("fk_idMovie");
         });
 
         modelBuilder.Entity<Movie>(entity =>
         {
-            entity.HasKey(e => e.IdMovie).HasName("PK__Movie__1A9A9792C75B41A1");
+            entity.HasKey(e => e.IdMovie).HasName("PK__Movie__1A9A9792B089A524");
 
             entity.ToTable("Movie");
 
